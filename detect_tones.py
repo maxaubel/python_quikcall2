@@ -17,7 +17,6 @@ def send_to_discord(message):
     
 
 def get_code(freq, codes, threshold):
-    # code = quik_call_freqs.get(freqPeak) or quik_call_freqs[min(quik_call_freqs.keys(), key=lambda k: abs(k-freqPeak))]
     dist = {}
 
     for i in codes:
@@ -28,7 +27,7 @@ def get_code(freq, codes, threshold):
     else:
         return codes[ min(dist, key=dist.get) ]
 
-CHUNK = 4096#8192 # number of data points to read at a time
+CHUNK = 4096 # 8192 # number of data points to read at a time
 RATE = 44100 # time resolution of the recording device (Hz)
 DIV = 32
 
@@ -41,7 +40,7 @@ quik_call_freqs = {553.9: 150, 584.8: 151, 617.4: 152, 651.9: 153, 688.3: 154, 7
 companias = {151: 1, 152: 2, 153: 3, 154: 4, 155: 5,
              156: 6, 157: 7, 158: 8, 159: 9, 160: 10}
 
-tones_counter = 0 # tono: num
+tones_counter = 0
 tones_open = 0
 last_code = 0
 
@@ -65,7 +64,6 @@ while(1):
     if (code == 150) and (not listening):
         listening = True
         listening_open = time.time()
-        #print("start listening")
         
     if time.time() - listening_open >= 1.5:
         listening = False
@@ -79,10 +77,7 @@ while(1):
         if code == last_code:
             tones_counter += 1
 
-        #print(f"{code}: {tones_counter}")
-
     if tones_counter > 4 and time.time()-tones_open<2 and code==last_code:
-        #print(tones_counter)
         print("\n\n!!!!!!!!!!!!")
         print(f"tono {companias[code]} compañía a las {datetime.now()}")
         send_to_discord(f"tono {companias[code]} compañía a las {datetime.now()}")
@@ -90,16 +85,6 @@ while(1):
         listening = False
         tones_counter = 0
             
-    '''if code == 150:
-        if not code in current_tone:
-            current_tone[150] = time.time()
-        
-        if time.time() - current_tone[150] > 0.5:
-            current_tone[-1] = True
-        
-        print(current_tone)
-    '''
-
         #print(f"{freqPeak} Hz, code: {code}")
         #print(f"tono {companias[code]} compañía")
 
