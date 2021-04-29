@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 import time 
 from datetime import datetime
 from discord_webhook import DiscordWebhook, DiscordEmbed
-
+from private import *
 
 np.set_printoptions(suppress=True)
 
 def send_to_discord(message):
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/836305348863197194/caX7oB-etv7XnfKAVL0ByD-irCD7LRC4L_ekuN0JLUftzLTHka20loiCxyLXGgTHxEcD', 
+    webhook = DiscordWebhook(url=webhook_url, 
     username="Central CBVM",
     content = message)
 
@@ -37,8 +37,7 @@ stream = p.open(format=pyaudio.paInt16,channels=1,rate=RATE,input=True, frames_p
 quik_call_freqs = {553.9: 150, 584.8: 151, 617.4: 152, 651.9: 153, 688.3: 154, 726.8: 155,
                    767.4: 156, 810.2: 157, 855.5: 158, 903.2: 159, 953.7: 160}
 
-companias = {151: 1, 152: 2, 153: 3, 154: 4, 155: 5,
-             156: 6, 157: 7, 158: 8, 159: 9, 160: 10}
+companias = {151: 1, 152: 2, 153: 3, 154: 4, 155: 5, 156: 6, 157: 7, 158: 8, 159: 9, 160: 10}
 
 tones_counter = 0
 tones_open = 0
@@ -46,6 +45,8 @@ last_code = 0
 
 listening = False
 listening_open = 0
+
+send_to_discord(f"TEST")
 
 while(1):
     data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
